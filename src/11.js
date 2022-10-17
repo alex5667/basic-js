@@ -1,37 +1,67 @@
-function transform(arr) {
-  if (!Array.isArray(arr) || !arr instanceof Array) {
-    throw new Error("'arr' parameter must be an instance of the Array!");
-  }
-  if (!arr || arr.length == 0) return [];
 
-  let newArr = [];
 
-  for (i = 0; i < arr.length; i++) {
-    if (arr[i] === '--double-prev') {
-      if (i !== 0) {
-        newArr.push(arr[i - 1]);
-      }
-    }
-    else if
-      (arr[i] === '--discard-prev') {
-      if (i !== 0) {
-        newArr = newArr.slice(0, -1);
-      }
-    }
-    else if
-      (arr[i] === '--double-next') {
-      if (i !== arr.length - 1) {
-        newArr.push(arr[i + 1]);
-      }
-    }
-    else if
-      (arr[i] === '--discard-next') {
-      if (i !== arr.length - 1) {
-        i = i + 2;
-      }
-    } else {
-      newArr.push(arr[i]);
-    }
+const chainMaker = {
+  arr: [],
+  
+  getLength() {
+  return this.arr.length
+  },
+  addLink(value) {
+  if (value === null) {
+  this.arr.push('null')
+  } else {
+  this.arr.push(String(value)) //? нужно ли здесь String
   }
-  return newArr;
-}
+  return this
+  },
+  removeLink(position) {
+  if (!this.arr[position - 1]) {
+  this.arr = []
+  throw new Error(`You can't remove incorrect link!`)
+  }
+  this.arr.splice(position - 1, 1)
+  return this
+  },
+  reverseChain() {
+  this.arr.reverse()
+  return this
+  },
+  finishChain() {
+  let str = this.arr.join(' )~~( ') // ['1', '2', '3'] => '1 )~~( 2 )~~( 3'
+  this.arr = []
+  return `( ${str} )`
+  },
+  }
+
+
+
+
+  const chainMaker = {
+    chain: [],
+    getLength() {
+      return this.chain.length;
+    },
+    addLink(value) {
+      value === undefined ? this.chain.push(`()`) : this.chain.push(`( ${value} )`);
+      return this
+  
+    },
+    removeLink(position) {
+      if (!this.chain[position] || !Number.isInteger(position) || position === 0) {
+        this.chain = []
+        throw new Error('You can\'t remove incorrect link!');
+      }
+      this.chain.splice(position - 1, 1)
+      return this
+    },
+    reverseChain() {
+      this.chain.reverse()
+      return this
+    },
+    finishChain() {
+  
+      let result = this.chain.join('~~');
+      this.chain = []
+      return result
+    }
+  };
