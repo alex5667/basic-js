@@ -1,33 +1,37 @@
-function getSeason(date) {
-    if (date == null) return 'Unable to determine the time of year!'
-    if (date.hasOwnProperty('toString')) throw new Error('Invalid date!')
-    let month = (date.getMonth() + 1).toString();
-  
-    let season = '';
-    switch (month) {
-      case '12':
-      case '1':
-      case '2':
-        season = 'winter';
-        break;
-      case '3':
-      case '4':
-      case '5':
-        season = 'spring';
-        break;
-      case '6':
-      case '7':
-      case '8':
-        season = 'summer';
-        break;
-      case '9':
-      case '10':
-      case '11':
-        season = 'fall';
-        break;
+function transform(arr) {
+  if (!Array.isArray(arr) || !arr instanceof Array) {
+    throw new Error("'arr' parameter must be an instance of the Array!");
+  }
+  if (!arr || arr.length == 0) return [];
+
+  let newArr = [];
+
+  for (i = 0; i < arr.length; i++) {
+    if (arr[i] === '--double-prev') {
+      if (i !== 0) {
+        newArr.push(arr[i - 1]);
+      }
     }
-    return season;
-
+    else if
+      (arr[i] === '--discard-prev') {
+      if (i !== 0) {
+        newArr = newArr.slice(0, -1);
+      }
+    }
+    else if
+      (arr[i] === '--double-next') {
+      if (i !== arr.length - 1) {
+        newArr.push(arr[i + 1]);
+      }
+    }
+    else if
+      (arr[i] === '--discard-next') {
+      if (i !== arr.length - 1) {
+        i = i + 2;
+      }
+    } else {
+      newArr.push(arr[i]);
+    }
+  }
+  return newArr;
 }
-
-console.log(getSeason(new Date(2020, 02, 31)))
