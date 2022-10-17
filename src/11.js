@@ -94,3 +94,52 @@ class DepthCalculator {
 
 
 
+  function repeater(str, options) {
+    let {repeatTimes = 1, separator = '+', addition = '', additionRepeatTimes = 1, additionSeparator = '|'} = options;
+   
+    if (typeof str !== 'string') str = String(str);
+    if (typeof addition !== 'string') addition = String(addition);
+   
+    let addArr = [];
+    while (addArr.length < additionRepeatTimes) {
+      addArr.push(addition);
+    }
+  
+    str = str + addArr.join(additionSeparator);
+  
+    let strArr = [];
+    while (strArr.length < repeatTimes) {
+      strArr.push(str);
+    }
+  
+    return strArr.join(separator);
+  }
+
+
+
+  function repeater(str, options) {
+    let result = [];
+  
+    let repeatTimes = options.repeatTimes || 1;
+    let separator = options.separator || '+';
+    let addition = (String(options.addition) !== 'undefined') ? String(options.addition) : '';
+    let additionRepeatTimes = options.additionRepeatTimes || 1;
+    let additionSeparator = options.additionSeparator || '|';
+    let substring = String(str)
+  
+    if (addition){
+    substring = str + (addition + additionSeparator).repeat(additionRepeatTimes);
+    }
+    if (addition) {
+      substring = substring.slice(0, substring.length - additionSeparator.length);
+    }
+  
+    for (let i = 0; i < repeatTimes; i++) {
+      result.push(substring);
+    }
+    return result.join(separator);
+  
+  }
+
+
+
